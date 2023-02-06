@@ -6,8 +6,8 @@
 ///
 /// ## Indexing rules:
 /// Node's parent is floor(i/2)
-/// Node's left/right children are 2i / 2i + 1 (starting from 1).
-#[derive(Default, Debug)]
+/// Node's left/right children are 2i+1 / 2i + 2 (starting from 0).
+#[derive(Default, Debug, Clone)]
 pub struct Heap<T> {
     heap: Vec<T>,
 }
@@ -29,20 +29,17 @@ impl<T> std::ops::Index<usize> for Heap<T> {
 impl<T> Heap<T>
 where
     T: Copy,
-    T: Default,
     T: Ord,
 {
     /// Constructs new empty heap.
     pub fn new() -> Heap<T> {
-        Heap::<T> {
-            heap: vec![T::default()],
-        }
+        Heap::<T> { heap: vec![] }
     }
 
     pub fn heapify(vec: Vec<T>) -> Heap<T> {
         let mut h = Heap::new();
         h.heap = vec;
-        for i in (1..=h.heap.len() / 2).rev() {
+        for i in (0..=h.heap.len() / 2).rev() {
             h.sink(i);
         }
         return h;
@@ -58,14 +55,14 @@ where
     /// Removes greatest element of the heap
     /// O(2 * log(n)), because children also must be compared
     pub fn pop(&mut self) -> Option<T> {
-        if self.heap.len() == 1 {
+        if self.heap.len() == 0 {
             return None;
         }
-        let res = self[1];
-        self[1] = self[self.heap.len() - 1];
+        let res = self[0];
+        self[0] = self[self.heap.len() - 1];
         self.heap.pop(); // remove the largest element
 
-        self.sink(1);
+        self.sink(0);
 
         return Some(res);
     }
@@ -73,15 +70,15 @@ where
     /// Returns lowerst element of the heap
     /// O(1)
     pub fn peek(&self) -> Option<T> {
-        if self.heap.len() > 1 {
-            Some(self.heap[1])
+        if self.heap.len() > 0 {
+            Some(self.heap[0])
         } else {
             None
         }
     }
 
     pub fn size(&self) -> usize {
-        self.heap.len() - 1
+        self.heap.len()
     }
 
     pub fn is_empty(&self) -> bool {
@@ -89,16 +86,16 @@ where
     }
 
     fn swim(&mut self, mut k: usize) {
-        while k > 1 && self.heap[k / 2] < self[k] {
+        while k > 0 && self.heap[k / 2] < self[k] {
             (self[k / 2], self[k], k) = (self[k], self[k / 2], k / 2)
         }
     }
 
     fn sink(&mut self, mut k: usize) {
-        while 2 * k < self.heap.len() {
-            let mut child_to_swap = 2 * k;
+        while 2 * k + 1 < self.heap.len() {
+            let mut child_to_swap = 2 * k + 1;
 
-            if 2 * k + 1 < self.heap.len() && self.heap[2 * k] < self.heap[2 * k + 1] {
+            if 2 * k + 2 < self.heap.len() && self.heap[2 * k + 1] < self.heap[2 * k + 2] {
                 child_to_swap += 1;
             }
 

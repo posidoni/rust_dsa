@@ -3,8 +3,8 @@ where
     T: Ord,
     T: Copy,
 {
-    while 2 * k <= n {
-        let mut j = 2 * k;
+    while 2 * k + 1 <= n {
+        let mut j = 2 * k + 1;
         if j < n && arr[j] < arr[j + 1] {
             j += 1;
         }
@@ -20,15 +20,14 @@ pub fn heapsort<T>(arr: &mut [T])
 where
     T: Ord,
     T: Copy,
-    T: std::fmt::Debug,
 {
-    for i in (1..=arr.len() / 2).rev() {
+    for i in (0..=arr.len() / 2).rev() {
         sink(arr, i, arr.len() - 1);
     }
     let mut n = arr.len() - 1;
-    while n > 1 {
-        (arr[n], arr[1]) = (arr[1], arr[n]);
+    while n > 0 {
+        (arr[n], arr[0]) = (arr[0], arr[n]);
         n -= 1;
-        sink(arr, 1, n); // heapify smaller part
+        sink(arr, 0, n); // heapify smaller part
     }
 }

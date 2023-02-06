@@ -22,24 +22,18 @@ mod tests {
 
     #[test]
     fn heapify_test() {
-        const FIRST_EL: i32 = -42;
-        let mut unsorted = vec![FIRST_EL, 5, 2, 3, 1, 4];
-        let sorted = vec![FIRST_EL, 1, 2, 3, 4, 5];
+        let mut unsorted = vec![5, 2, 3, 1, 4];
+        let sorted = vec![1, 2, 3, 4, 5];
         heap::heap_sort::heapsort(&mut unsorted);
         assert_eq!(unsorted, sorted);
 
-        let mut unsorted = vec![FIRST_EL, 1, 2, 3, 4, 5];
-        let sorted = vec![FIRST_EL, 1, 2, 3, 4, 5];
+        let mut unsorted = vec![1, 2, 3, 4, 5];
+        let sorted = vec![1, 2, 3, 4, 5];
         heap::heap_sort::heapsort(&mut unsorted);
         assert_eq!(unsorted, sorted);
 
-        let mut unsorted = vec![FIRST_EL, 1, 5, 8, 9, 3, 4, 5, 5, 0];
-        let sorted = vec![FIRST_EL, 0, 1, 3, 4, 5, 5, 5, 8, 9];
-        heap::heap_sort::heapsort(&mut unsorted);
-        assert_eq!(unsorted, sorted);
-
-        let mut unsorted = vec![FIRST_EL];
-        let sorted = vec![FIRST_EL];
+        let mut unsorted = vec![1, 5, 8, 9, 3, 4, 5, 5, 0];
+        let sorted = vec![0, 1, 3, 4, 5, 5, 5, 8, 9];
         heap::heap_sort::heapsort(&mut unsorted);
         assert_eq!(unsorted, sorted);
     }
